@@ -1,7 +1,6 @@
 import cv2
 
 from handchecker import HandChecker
-from palm import Palm
 from letterfinder import LetterFinder
 import mediapipe as mp
 import datetime
