@@ -1,34 +1,42 @@
 #!/usr/bin/python3
 
-from handchecker import HandChecker as hc
 from palm import Palm
-from test import fingers, rotate
-from main import hand
-
-fingers = hc.fingers
-rotate = hc.rotate
 
 class LetterFinder:
+    """
+    Здесь собраны фунции для определения буквы, которую показывает пользователь
+    """
 
-    def getLetter(self, landnmark) -> str:
-        if rotate == 'Front':
-            if fingers == 'Up':
-                if self.__isLetter_Ы(self, landnmark):
-                    return 'Ы'
-                if self.__isLetter_И(self, landnmark):
-                    return 'И'
-                if self.__isLetter_Н(self, landnmark):
-                    return 'Н'
-                if self.__isLetter_Ш(self, landnmark):
-                    return 'Ш'
-                if self.__isLetter_Р(self, landnmark):
-                    return 'Р'
-                if hand == 'R':
-                    if self.__isLetter_ВR(self, landnmark):
-                        return 'В'
-                if hand == 'L':
-                    if self.__isLetter_ВL(self, landnmark):
-                        return 'В'
+    def __init__(self):
+        pass
+
+    def getLetter(self, hand, rotate, fingers, landnmark) -> str:
+        """
+        Функуия для выбора буквы
+        :param hand: Рука, выбранная пользователем
+        :param rotate: Положение ладони в пространстве
+        :param fingers: Поворот пальцев
+        :param landnmark: Массив координат точек на ладони
+        """
+
+        if self.__isLetter_Ы(landnmark):
+            return 'Ы'
+        if self.__isLetter_И(landnmark):
+            return 'И'
+        if self.__isLetter_Н(landnmark):
+            return 'Н'
+        if self.__isLetter_Ш(landnmark):
+            return 'Ш'
+        if self.__isLetter_Р( landnmark):
+            return 'Р'
+        if hand == 'R':
+            if self.__isLetter_ВR( landnmark):
+                return 'В'
+        if hand == 'L':
+            if self.__isLetter_ВL(landnmark):
+                return 'В'
+        return ''
+
     # Private functions
     def __isLetter_А(self, landmark) -> bool:
         pass
