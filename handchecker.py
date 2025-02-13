@@ -50,18 +50,62 @@ class HandChecker:
         return 0.85 < landmark[Palm.MIDDLE_FINGER_MCP].y / landmark[Palm.WRIST].y < 1.2
 
     def __rotateFrontR(self,landmark) -> bool:
-        return self.sel_hand=='R' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 0.8
+        if self.__fingersDown(landmark):
+            return self.sel_hand == 'R' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x > 1.1
+        elif self.__fingersUp(landmark):
+            return (self.sel_hand == 'R' and
+                    (landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1))
+        else:
+            if landmark[Palm.MIDDLE_FINGER_MCP].x > landmark[Palm.WRIST].x:
+                return self.sel_hand == 'R' and landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1
+            else:
+                return self.sel_hand == 'R' and  0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y
     def __rotateBackR(self,landmark) -> bool:
-        return self.sel_hand=='R' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x > 1.25
+        if self.__fingersDown(landmark):
+            return self.sel_hand == 'R' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 0.9
+        elif self.__fingersUp(landmark):
+            return (self.sel_hand =='R' and
+                    (0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x))
+        else:
+            if landmark[Palm.MIDDLE_FINGER_MCP].x > landmark[Palm.WRIST].x:
+                return self.sel_hand == 'R' and  0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y
+            else:
+                return self.sel_hand == 'R' and landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1
     def __rotateMiddleR(self,landmark) -> bool:
-        return self.sel_hand=='R' and 0.8 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.25
+        return (self.sel_hand=='R' and 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1 and
+                0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1)
 
     def __rotateFrontL(self,landmark) -> bool:
-        return self.sel_hand=='L' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x > 1.25
+        if self.__fingersDown(landmark):
+            return self.sel_hand == 'L' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 0.9
+        elif self.__fingersUp(landmark):
+            return (self.sel_hand == 'L' and
+                    (0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1 < landmark[
+                        Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x))
+        else:
+            if landmark[Palm.MIDDLE_FINGER_MCP].x > landmark[Palm.WRIST].x:
+                return self.sel_hand == 'L' and 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[
+                    Palm.PINKY_MCP].x < 1.1 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y
+            else:
+                return self.sel_hand == 'L' and landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 0.9 < \
+                    landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1
     def __rotateBackL(self,landmark) -> bool:
-        return self.sel_hand=='L' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 0.8
+        if self.__fingersDown(landmark):
+            return self.sel_hand == 'L' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x > 1.1
+        elif self.__fingersUp(landmark):
+            return (self.sel_hand == 'L' and
+                    (landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 0.9 < landmark[
+                        Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1))
+        else:
+            if landmark[Palm.MIDDLE_FINGER_MCP].x > landmark[Palm.WRIST].x:
+                return self.sel_hand == 'L' and landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 0.9 < \
+                    landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1
+            else:
+                return self.sel_hand == 'L' and 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[
+                    Palm.PINKY_MCP].x < 1.1 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y
     def __rotateMiddleL(self,landmark) -> bool:
-        return self.sel_hand=='L' and 0.8 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.25
+        return (self.sel_hand=='L' and 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1 and
+                0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1)
 
 if __name__ == '__main__':
     print('You should not run this file. Call main.py instead')
