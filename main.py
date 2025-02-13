@@ -44,8 +44,10 @@ while True:
             mpDraw.draw_landmarks(border, hand_landmarks, mpHands.HAND_CONNECTIONS)
 
             if meaning == True:
-                rot = hc.checkHandRotate(hand_landmarks.landmark)
                 fin = hc.checkHandFingers(hand_landmarks.landmark)
+                rot = hc.checkHandRotate(hand_landmarks.landmark)
+                print(rot)
+                print(fin)
 
                 next = lf.getLetter(hand, rot, fin, hand_landmarks.landmark)
                 if next != '':
