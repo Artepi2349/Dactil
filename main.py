@@ -23,6 +23,8 @@ mpDraw = mp.solutions.drawing_utils
 lf = LetterFinder() #Класс LetterFinder
 hc = HandChecker(hand) #Класс HandChecker
 
+start_sec = datetime.datetime.now().time().second
+
 while True:
     if hand == 'R' or hand == 'L':
         good, img = camera.read()
@@ -32,7 +34,7 @@ while True:
 
         millisec = datetime.datetime.now().time().microsecond // 1000 #Миллисекунды
         sec = datetime.datetime.now().time().second #Секунды
-        if sec % 5 == 0:
+        if abs(start_sec - sec) % 5 == 0:
             border = cv2.copyMakeBorder(img, 20, 20, 20, 20, cv2.BORDER_CONSTANT, value=red)
             if 200 < millisec < 245:
                 meaning = True
