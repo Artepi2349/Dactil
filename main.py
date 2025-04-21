@@ -6,6 +6,7 @@ import mediapipe as mp
 import datetime
 import gtts
 from playsound import playsound
+import sqlite3
 
 print('Выберите руку, которой будете показывать жесты(R - правая, L - левая)')
 
@@ -20,7 +21,19 @@ text = '' #Текст
 word = '' #Слово
 letter = '' #Буква
 meaning = False #Значение, которое включает функции в определённый временной промежуток
-breakMean = 0
+breakMean = False
+wordList = []
+allLetterList = []
+letterList = []
+inputLetterList = []
+lenWord = 0
+counter = 0
+matchesPercentage = 0
+matchesPercentageNew = 0
+matches = 0
+matchesNew = 0
+numberMatch = 0
+wordMatch = ''
 
 camera = cv2.VideoCapture(0) #Видео с камеры
 
@@ -34,6 +47,9 @@ hc = HandChecker(hand) #Класс HandChecker
 start_sec = datetime.datetime.now().time().second
 
 clear = lambda: os.system('cls')
+
+connection = sqlite3.connect('words.db')
+cursor = connection.cursor()
 
 while True:
     if (hand == 'R' or hand == 'L') and (mode == 'T' or mode == 'W'):
@@ -69,7 +85,7 @@ while True:
 
                     next = lf.getLetter(hand, rot, fin, hand_landmarks.landmark)
                     if next == 'break':
-                        breakMean = 1
+                        breakMean = True
                         print('Не делай так')
                     elif next == ' ':
                         if mode == 'T':
@@ -83,23 +99,49 @@ while True:
                     elif next == 'stop':
                         if mode == 'W':
                             print(word)
+                            lenWord = len(word)
+                            for g in range(lenWord):
+                                inputLetterList += word[g]
+                            cursor.execute(f'SELECT word FROM Words WHERE length = {lenWord}')
+                            Words = cursor.fetchall()
+                            for dbword in Words:
+                                wordList += dbword
+                            for i in wordList:
+                                counter+=1
+                                for h in range(lenWord):
+                                    allLetterList += i[h]
+                                letterList = allLetterList[lenWord * (counter-1):lenWord * counter]
+                                for k in range(lenWord):
+                                    if letterList[k] == inputLetterList[k]:
+                                        matchesNew+=1
+                                        if matchesNew > matches:
+                                            matches = matchesNew
+                                            numberMatch = k
+                                matchesPercentageNew = matches / lenWord
+                                if matchesPercentageNew > matchesPercentage:
+                                    wordMatch = i
+                                    matchesPercentage = matchesPercentageNew
+                                matches = 0
+                                matchesNew = 0
+                            if matchesPercentage < 1:
+                                print(f'Возможно вы ошиблись, думаю вы хотели ввести {wordMatch}, процент совпадения - {round(matchesPercentage*100, 1)} %')
                             tts = gtts.gTTS(word, lang='ru')
                             tts.save("word2.mp3")
                             playsound("word2.mp3")
-                            breakMean = 1
+                            breakMean = True
                         else:
                             text += word
                             print(text)
                             tts = gtts.gTTS(text, lang='ru')
                             tts.save("text1.mp3")
                             playsound("text1.mp3")
-                            breakMean = 1
+                            breakMean = True
                     elif next != '':
                         word += next
                         print(word)
                     meaning = False
 
-        if breakMean == 1:
+        if breakMean:
             break
         cv2.imshow("Result", border)
 
