@@ -33,12 +33,16 @@ class HandChecker:
         :param landmark: Массив координат точек на ладони
         """
 
+        rotate = 'NONE'
+
         if self.__rotateBackR(landmark) or self.__rotateBackL(landmark):
             rotate = 'Back'
         if self.__rotateFrontR(landmark) or self.__rotateFrontL(landmark):
             rotate = 'Front'
         if self.__rotateMiddleR(landmark) or self.__rotateMiddleL(landmark):
             rotate = 'Middle'
+        if self.__fist(landmark):
+            rotate = 'Fist'
         return rotate
 
     # Private functions
@@ -46,7 +50,7 @@ class HandChecker:
         return ((landmark[Palm.MIDDLE_FINGER_MCP].y / landmark[Palm.THUMB_CMC].y < 0.85) and
                 (0.9 < landmark[Palm.MIDDLE_FINGER_MCP].x / landmark[Palm.WRIST].x < 1.1))
     def __fingersDown(self, landmark) -> bool:
-        return ((landmark[Palm.MIDDLE_FINGER_MCP].y / landmark[Palm.THUMB_CMC].y > 1.2))
+        return landmark[Palm.MIDDLE_FINGER_MCP].y / landmark[Palm.THUMB_CMC].y > 1.2
     def __fingersMiddle(self, landmark) -> bool:
         return ((0.85 < landmark[Palm.MIDDLE_FINGER_MCP].y / landmark[Palm.THUMB_CMC].y < 1.2) or
                 (landmark[Palm.MIDDLE_FINGER_MCP].x / landmark[Palm.WRIST].x > 1.1 or
@@ -94,12 +98,12 @@ class HandChecker:
             return self.sel_hand == 'L' and landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 0.9
         elif self.__fingersUp(landmark):
             return (self.sel_hand == 'L' and
-                    (0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1 < landmark[
-                        Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x))
+                    (0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1 <
+                     landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x))
         else:
             if landmark[Palm.MIDDLE_FINGER_MCP].x > landmark[Palm.WRIST].x:
-                return self.sel_hand == 'L' and 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[
-                    Palm.PINKY_MCP].x < 1.1 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y
+                return (self.sel_hand == 'L' and 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x
+                        < 1.1 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y)
             else:
                 return self.sel_hand == 'L' and landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 0.9 < \
                     landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1
@@ -120,6 +124,11 @@ class HandChecker:
     def __rotateMiddleL(self,landmark) -> bool:
         return (self.sel_hand=='L' and 0.9 < landmark[Palm.INDEX_FINGER_MCP].x / landmark[Palm.PINKY_MCP].x < 1.1 and
                 0.9 < landmark[Palm.INDEX_FINGER_MCP].y / landmark[Palm.PINKY_MCP].y < 1.1)
+
+
+    def __fist(self, landmark) -> bool:
+        return (0.8 < landmark[Palm.MIDDLE_FINGER_MCP].x/landmark[Palm.WRIST].x < 1.2 and
+                0.8 < landmark[Palm.MIDDLE_FINGER_MCP].y/landmark[Palm.WRIST].y < 1.2)
 
 if __name__ == '__main__':
     print('You should not run this file. Call main.py instead')
