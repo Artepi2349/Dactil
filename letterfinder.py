@@ -50,12 +50,7 @@ class LetterFinder:
                 if self.__stopL(landmark):
                     return 'stop'
         if rotate == 'Front' and fingers == 'Middle':
-            if hand == 'R':
-                if self.__isLetter_АR(landmark):
-                    return 'А'
-            if hand == 'L':
-                if self.__isLetter_AL(landmark):
-                    return 'А'
+            pass
         if rotate == 'Front' and fingers == 'Down':
             if hand == 'R':
                 if self.__isLetter_ГR(landmark):
@@ -111,7 +106,12 @@ class LetterFinder:
         if rotate == 'Back' and fingers == 'Up':
             pass
         if rotate == 'Back' and fingers == 'Middle':
-            pass
+            if hand == 'R':
+                if self.__isLetter_АR(landmark):
+                    return 'А'
+            if hand == 'L':
+                if self.__isLetter_AL(landmark):
+                    return 'А'
         if rotate == 'Back' and fingers == 'Down':
             if hand == 'R':
                 if self.__isLetter_ЛR(landmark):
@@ -138,25 +138,8 @@ class LetterFinder:
                 return 'break'
         return ''
 
-#Правее - меньше, левее - больше
-#Ниже - больше, выше - меньше
-
     # Private functions
     def __isLetter_АR(self, landmark) -> bool:
-        return ((landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.MIDDLE_FINGER_TIP].y and
-                landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.RING_FINGER_TIP].y and
-                landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.PINKY_TIP].y) and
-                (landmark[Palm.THUMB_TIP].y < landmark[Palm.INDEX_FINGER_DIP].y and
-                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.MIDDLE_FINGER_DIP].y and
-                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.RING_FINGER_DIP].y and
-                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.PINKY_DIP].y) and
-                (landmark[Palm.INDEX_FINGER_PIP].x > landmark[Palm.INDEX_FINGER_TIP].x and
-                 landmark[Palm.MIDDLE_FINGER_PIP].x > landmark[Palm.MIDDLE_FINGER_TIP].x and
-                 landmark[Palm.RING_FINGER_PIP].x > landmark[Palm.RING_FINGER_TIP].x and
-                 landmark[Palm.PINKY_PIP].x > landmark[Palm.PINKY_TIP].x) and
-                (landmark[Palm.WRIST].x < landmark[Palm.THUMB_TIP].x))
-
-    def __isLetter_AL(self, landmark) -> bool:
         return ((landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.MIDDLE_FINGER_TIP].y and
                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.RING_FINGER_TIP].y and
                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.PINKY_TIP].y) and
@@ -169,6 +152,19 @@ class LetterFinder:
                  landmark[Palm.RING_FINGER_PIP].x < landmark[Palm.RING_FINGER_TIP].x and
                  landmark[Palm.PINKY_PIP].x < landmark[Palm.PINKY_TIP].x) and
                 (landmark[Palm.WRIST].x > landmark[Palm.THUMB_TIP].x))
+    def __isLetter_AL(self, landmark) -> bool:
+        return ((landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.MIDDLE_FINGER_TIP].y and
+                landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.RING_FINGER_TIP].y and
+                landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.PINKY_TIP].y) and
+                (landmark[Palm.THUMB_TIP].y < landmark[Palm.INDEX_FINGER_DIP].y and
+                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.MIDDLE_FINGER_DIP].y and
+                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.RING_FINGER_DIP].y and
+                 landmark[Palm.INDEX_FINGER_TIP].y < landmark[Palm.PINKY_DIP].y) and
+                (landmark[Palm.INDEX_FINGER_PIP].x > landmark[Palm.INDEX_FINGER_TIP].x and
+                 landmark[Palm.MIDDLE_FINGER_PIP].x > landmark[Palm.MIDDLE_FINGER_TIP].x and
+                 landmark[Palm.RING_FINGER_PIP].x > landmark[Palm.RING_FINGER_TIP].x and
+                 landmark[Palm.PINKY_PIP].x > landmark[Palm.PINKY_TIP].x) and
+                (landmark[Palm.WRIST].x < landmark[Palm.THUMB_TIP].x))
     def __isLetter_Б(self, landmark) -> bool:
         pass
     def __isLetter_ВR(self, landmark) -> bool:
@@ -211,7 +207,6 @@ class LetterFinder:
                 (landmark[Palm.THUMB_TIP].x < landmark[Palm.MIDDLE_FINGER_TIP].x))
     def __isLetter_Д(self, landmark) -> bool:
         pass
-
     def __isLetter_ЕR(self, landmark) -> bool:
         return (landmark[Palm.THUMB_TIP].x < landmark[Palm.THUMB_CMC].x and
                 landmark[Palm.INDEX_FINGER_TIP].x < landmark[Palm.INDEX_FINGER_MCP].x and
@@ -223,7 +218,6 @@ class LetterFinder:
                 landmark[Palm.RING_FINGER_TIP].y > landmark[Palm.RING_FINGER_MCP].y and
                 landmark[Palm.PINKY_TIP].y > landmark[Palm.PINKY_MCP].y and
                 landmark[Palm.THUMB_TIP].x < landmark[Palm.MIDDLE_FINGER_TIP].x)
-
     def __isLetter_ЕL(self, landmark) -> bool:
         return (landmark[Palm.THUMB_TIP].x > landmark[Palm.THUMB_CMC].x and
                 landmark[Palm.INDEX_FINGER_TIP].x > landmark[Palm.INDEX_FINGER_MCP].x and
@@ -237,7 +231,6 @@ class LetterFinder:
                 landmark[Palm.THUMB_TIP].x > landmark[Palm.MIDDLE_FINGER_TIP].x)
     def __isLetter_Ё(self, landmark) -> bool:
         pass
-
     def __isLetter_ЖL(self, landmark) -> bool:
         return (landmark[Palm.THUMB_TIP].x > landmark[Palm.THUMB_CMC].x and
                 landmark[Palm.INDEX_FINGER_TIP].x > landmark[Palm.INDEX_FINGER_MCP].x and
@@ -250,7 +243,6 @@ class LetterFinder:
                 landmark[Palm.PINKY_TIP].y > landmark[Palm.PINKY_MCP].y and
                 landmark[Palm.THUMB_TIP].x < landmark[Palm.MIDDLE_FINGER_TIP].x and
                 landmark[Palm.THUMB_TIP].y > landmark[Palm.INDEX_FINGER_TIP].y)
-
     def __isLetter_ЖR(self, landmark) -> bool:
         return (landmark[Palm.THUMB_TIP].x < landmark[Palm.THUMB_CMC].x and
                 landmark[Palm.INDEX_FINGER_TIP].x < landmark[Palm.INDEX_FINGER_MCP].x and
@@ -380,7 +372,6 @@ class LetterFinder:
                  landmark[Palm.MIDDLE_FINGER_TIP].y / landmark[Palm.RING_FINGER_TIP].y > 1.3) and
                 (landmark[Palm.PINKY_TIP].y < landmark[Palm.INDEX_FINGER_TIP].y and
                  landmark[Palm.PINKY_TIP].y < landmark[Palm.MIDDLE_FINGER_TIP].y))
-
     def __isLetter_ПL(self, landmark) -> bool:
         return ((landmark[Palm.INDEX_FINGER_TIP].y > landmark[Palm.WRIST].y and
                  landmark[Palm.MIDDLE_FINGER_TIP].y > landmark[Palm.WRIST].y) and
@@ -428,7 +419,6 @@ class LetterFinder:
                  landmark[Palm.PINKY_TIP].y < landmark[Palm.MIDDLE_FINGER_TIP].y and
                  landmark[Palm.PINKY_TIP].y < landmark[Palm.RING_FINGER_TIP].y and
                  landmark[Palm.MIDDLE_FINGER_TIP].y / landmark[Palm.RING_FINGER_TIP].y < 1.3))
-
     def __isLetter_ТL(self, landmark) -> bool:
         return ((landmark[Palm.INDEX_FINGER_TIP].y > landmark[Palm.WRIST].y and
                  landmark[Palm.MIDDLE_FINGER_TIP].y > landmark[Palm.WRIST].y and
