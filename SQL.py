@@ -1,4 +1,5 @@
 import sqlite3
+id = ''
 print('Выберите режим: select - S, update - U')
 mode = input()
 print('Введите слово:')
@@ -17,7 +18,9 @@ def update(a,b):
 if mode == 'S':
     select(word,length)
 elif mode == 'U':
-    update(word,length)
+    print('Введите id слова, которое надо изменить:')
+    id = input()
+    update(word,id)
 else:
     print('Выбран неверный режим работы, попробуйте снова')
 
